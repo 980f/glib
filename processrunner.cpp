@@ -16,7 +16,7 @@ bool ProcessRunner::run(const std::vector<std::string> &argv){
   in.hangup(sigc::bind(MyHandler(ProcessRunner::hangup),-1));
   //we don't out.output until there is a writeInterest else we get spammed with writes.
 
-  if(mergErr){
+  if(mergeErrors){
     err.input(sigc::bind(MyHandler(ProcessRunner::readable),1));
 //the following may be gratuitous, for normal completion conditions it is redundant
     err.hangup(sigc::bind(MyHandler(ProcessRunner::hangup),-2));
@@ -85,7 +85,7 @@ bool ProcessRunner::hangup(int which){
   return false;
 }
 
-void ProcessRunner::writeInterest() {
+void ProcessRunner::whenWritable() {
   out.output(MyHandler(ProcessRunner::writeable));
 }
 

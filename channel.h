@@ -4,6 +4,12 @@
 #include <glibmm.h>
 #include "sigcuser.h"
 
+/** wraps an asynch message queue 
+	it has a refcount that includes itself.
+	it delete's itself if you unref() when there are no messages pending.
+	
+@deprecated	no known users.
+*/
 class Channel: SIGCTRACKABLE {
 public:
   typedef sigc::slot< void, gpointer > t_slot;

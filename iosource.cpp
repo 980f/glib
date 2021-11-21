@@ -38,7 +38,6 @@ bool IoSource::isValid() const {
   return fd!=~0;//unix standard, >=0 would probably be fine
 }
 
-#if ArtWithPosix
 ssize_t IoSource::read(void *__buf, size_t __nbytes){
   //todo:1 create breakpoints for using invalid fd.
   return  recode(::read(fd,__buf,__nbytes));
@@ -53,8 +52,7 @@ int IoSource::recode(ssize_t rwreturn){
     int errnum(errno);
     if(EINTR == errnum || EAGAIN == errnum || EWOULDBLOCK == errnum) {
       return 0;//still more perhaps.
-    }
-    else {
+    } else {
       return -errnum;
     }
   } else {
@@ -66,7 +64,6 @@ void IoSource::close(){
   ::close(fd);
   fd = ~0;
 }
-#endif
 
 IoConnections::IoConnections(IoSource &source):
   source(source){
@@ -79,7 +76,7 @@ void IoConnections::disconnect(){
   outgoing.disconnect();
 }
 
-bool IoConnections::writeInterest(IoSource::Slot action){
+bool IoConnections::whenWritable(IoSource::Slot action){
   if(!outgoing) {
     outgoing= source.output(action);
     return true;

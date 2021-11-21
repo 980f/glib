@@ -45,7 +45,6 @@ bool TcpServer::serveAt(int port, int interfaceIP, int backlog){
 }
 
 void TcpServer::shutdown(bool permanently){
-  //  listenerp->close();
   server.sock.close();
   if(permanently){
     server.connectArgs.erase();

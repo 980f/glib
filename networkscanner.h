@@ -5,6 +5,7 @@
 #include "chain.h"
 #include "processrunner.h"
 
+/** runs arp -Dan and deals with what that returns */
 class NetworkScanner: public ProcessRunner {
   SimpleSignal onDone;//who to call when list is refreshed
   /** which command was issued and hence how to parse the return data */

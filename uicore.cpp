@@ -1,12 +1,12 @@
 #include "uicore.h"
-#include "l10n.h"
+#include "l10n.h"     //this is project specific. You will have to roll your own providing a soliton l10n whith a member lookupText.
 #include "minimath.h"
 #include "string.h"
 
 /////////////////
 /** globalized in case we implement ltr vs rtl*/
 Glib::ustring addColon(const Glib::ustring &prompt){
-  //todo:0 #353 if prompt already ends in colon or colon and whitespace then don't add extra
+  //todo:0 # if prompt already ends in colon or colon and whitespace then don't add extra
   return prompt + ": ";
 }
 

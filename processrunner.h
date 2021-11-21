@@ -6,11 +6,11 @@
 #include "charscanner.h"
 
 class ProcessRunner {
-  /** buffer for outgoing data, although later changes made it possible to push this back into using classes.*/
+  /** buffer for outgoing data, for when sender can't retain until this class has gotten around to sending it*/
   u8 sendbuff[4096];
   ByteScanner sender;
   /** whether to make the data on the err stream seem as if it comes from the in.*/
-  bool mergErr;
+  bool mergeError;
 protected:
   int hangups;
   Glib::Pid pid;
@@ -39,13 +39,13 @@ protected:
   virtual bool writeSome(ByteScanner &outgoing);
 
 public:
-  /** just prepares to run the process @param mergErr @see mergErr member. default of true is statistical by textual occurence */
-  ProcessRunner(bool mergeErr=true);
+  /** just prepares to run the process @param mergeErrors @see mergeErrors member. */
+  ProcessRunner(bool mergeErrors = true);
   typedef std::vector<std::string> Args;
   /** @returns whether process launched successfully, e.g. will return false if command not found */
   bool run(const Args &argv);
   /** call this when you would like to write something, writeSome will get called to sak for the data to send*/
-  void writeInterest();
+  void whenWritable();
 };
 
 #endif // PROCESSRUNNER_H

@@ -2,7 +2,12 @@
 #define CYCLICACTION_H
 
 #include "sigcuser.h"
-/** a restartable, run only one instance action */
+/** a restartable, run only one instance action
+
+This will periodically run an action. 
+When paused it does NOT accumulate overdue instances.
+
+ */
 class CyclicAction {
 public:
   /** if action returns false cycling stops */
@@ -21,7 +26,7 @@ public:
   bool stop();
   /** @returns whether it (timing, not the action) was running before this instance of calling pause, which is false if already paused.*/
   bool pause();
-  /** start again if was paused, @returns whether it was blocked. */
+  /** start again if was paused, @returns whether it was blocked. If @param immediately is true then will invoke the action now whether or not it became due while paused */
   bool resume(bool immediately);
   void setCycleTime(double seconds);
   /** @returns whether cycler is not stopped*/
@@ -45,6 +50,7 @@ class CyclerPauser{
   CyclicAction &cycler;
   bool immediately;
 public:
+	/** @param immediately is passed to @see CyclicAction::resume() on deletion of this object*/
   CyclerPauser(CyclicAction &cycler,bool immediately=true);
   ~CyclerPauser();
   /** unpause now*/
